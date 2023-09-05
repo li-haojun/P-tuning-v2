@@ -223,9 +223,12 @@ class RobertaPrefixForTokenClassification(RobertaPreTrainedModel):
         super().__init__(config)
         self.num_labels = config.num_labels
         self.roberta = RobertaModel(config, add_pooling_layer=False)
+        #通过RobertaModel这个类来创建模型，因为继承的父类RobertaPreTrainedModel中没有模型实现，RobertaPreTrainedModel类只简单重写了_init_weights()函数
         self.dropout = torch.nn.Dropout(config.hidden_dropout_prob)
         self.classifier = torch.nn.Linear(config.hidden_size, config.num_labels)
         self.init_weights()
+        #init_weights函数是父类RobertaPreTrainedModel的父类PretrainedModel中的函数，此函数会调用apply(_init_weights)函数对每个模块进行初始化参数，
+        #所以才要求PretrainedModel的子类需要重写_init_weights()，很多函数例如a(),都会调用与其函数名类似的函数_a()来实现功能，猜测是因为这样使得继承的子类重写一下功能函数时更加方便
 
         for param in self.roberta.parameters():
             param.requires_grad = False
