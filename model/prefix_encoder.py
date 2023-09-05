@@ -20,6 +20,7 @@ class PrefixEncoder(torch.nn.Module):
                 torch.nn.Tanh(),
                 torch.nn.Linear(config.prefix_hidden_size, config.num_hidden_layers * 2 * config.hidden_size)
             )
+            #使用两层加一个激活层来当映射，可以使得这个映射是非线性的，效果更好
         else:
             self.embedding = torch.nn.Embedding(config.pre_seq_len, config.num_hidden_layers * 2 * config.hidden_size)
 
